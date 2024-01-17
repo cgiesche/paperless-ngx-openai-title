@@ -1,0 +1,5 @@
+pip~=23.2.1
+certifi~=2023.11.17
+idna~=3.6
+urllib3~=2.1.0
+requests~=2.31.0
