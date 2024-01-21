@@ -3,7 +3,7 @@ import re
 
 import requests
 
-import config_local as config
+import config
 
 paperless_base_url = config.paperless['base_url']
 paperless_auth_header = {'Authorization': 'Token ' + config.paperless['api_key']}
