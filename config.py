@@ -3,7 +3,7 @@ openAI = dict(
     organization='',
     language='german',  # Request answer in this language
 
-    model='gpt-3.5-turbo',
+    model='gpt-3.5-turbo-1106',
     base_url='https://api.openai.com/v1/chat/completions'
 )
 

@@ -16,6 +16,10 @@ print('Reading document details for document ' + DOCUMENT_ID + " from paperless.
 document_url_template = paperless_base_url + '/api/documents/{document_id}/'
 document_url = document_url_template.format(document_id=DOCUMENT_ID)
 document_response = requests.get(document_url, headers=paperless_auth_header)
+if document_response.status_code == 404:
+    print("Document does not exist!")
+    exit(0)
+
 document_json = document_response.json()
 
 original_document_content = document_json['content']
@@ -42,7 +46,7 @@ system_role_message = "You are an expert in analyzing texts. Your task is to cre
                       "the text provided by the user. Be aware that the text may result from an OCR " \
                       "process and contain imprecise segments. Avoid mentioning dates, any form of " \
                       "monetary values or or specific names (such as individuals or organizations) in the " \
-                      "title. Ensure the title does not exceed 128 characters. Most importantly, generate " \
+                      "title. Ensure the title does never exceed 128 characters. Most importantly, generate " \
                       "the title in " + openai_language + "."
 
 request = {
