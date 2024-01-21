@@ -24,31 +24,32 @@ original_document_title = document_json['title']
 # Check if title matches filter
 title_pattern = config.paperless['title_pattern']
 if not re.match(title_pattern, original_document_title):
-    print('Current title ' + original_document_title + ' does not match pattern ' + title_pattern + '. Skipping.')
+    print(f"Current title \"{original_document_title}\" does not match pattern \"{title_pattern}\". Skipping.")
     exit(0)
 
 # Send content to GPT and ask for title
-print('Asking OpenAI model ' + config.openAI['model'] + ' for a title.')
+openai_api_key = config.openAI['api_key']
+openai_organization = config.openAI['organization']
+
 openai_auth_headers = {
-    'Authorization': 'Bearer ' + config.openAI['api_key'],
+    'Authorization': f'Bearer {openai_api_key}',
     'Content-Type': 'application/json',
-    'OpenAI-Organization': config.openAI['organization']
+    'OpenAI-Organization': openai_organization
 }
+openai_model = config.openAI['model']
+openai_language = config.openAI['language']
+system_role_message = "You are an expert in analyzing texts. Your task is to create a title for " \
+                      "the text provided by the user. Be aware that the text may result from an OCR " \
+                      "process and contain imprecise segments. Avoid mentioning dates, any form of " \
+                      "monetary values or or specific names (such as individuals or organizations) in the " \
+                      "title. Ensure the title does not exceed 128 characters. Most importantly, generate " \
+                      "the title in " + openai_language + "."
+
 request = {
-    "model": config.openAI['model'],
+    "model": openai_model,
     "messages": [
-        {
-            "role": "system",
-            "content": "You are an expert in analyzing texts. Your task is to create a title for the text provided by "
-                       "the user. Be aware that the text may result from an OCR process and contain imprecise "
-                       "segments. Avoid mentioning dates, any form of monetary values or or specific names (such as "
-                       "individuals or organizations) in the title. Ensure the title does not exceed 128 characters. "
-                       "Most importantly, generate the title in " + config.openAI['language'] + "."
-        },
-        {
-            "role": "user",
-            "content": original_document_content
-        }
+        {"role": "system", "content": system_role_message},
+        {"role": "user", "content": original_document_content}
     ],
     "temperature": 0.7
 }
@@ -59,15 +60,15 @@ open_ai_response_content = openai_response_json['choices'][0]['message']['conten
 print("OpenAI title suggestion: " + open_ai_response_content)
 
 # Update Title and add note
-print('Saving original title of document with ID ' + DOCUMENT_ID + ' as note.')
+print(f'Saving original title of document with ID {DOCUMENT_ID} as note.')
 document_original_title_note_request = {
-    'note': 'Original title: ' + original_document_title
+    'note': f'Original title: {original_document_title}'
 }
 result = requests.post(document_url + "notes/", json=document_original_title_note_request, headers=paperless_auth_header)
 if not result.ok:
     raise AssertionError("Adding original title as note failed.")
 
-print('Updating title of document with ID ' + DOCUMENT_ID )
+print(f'Updating title of document with ID {DOCUMENT_ID}')
 document_title_request = {
     'title': open_ai_response_content
 }
