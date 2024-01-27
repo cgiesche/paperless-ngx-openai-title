@@ -1,0 +1,11 @@
+version: '3.1'
+services:
+  paperless-ngx-openai-title:
+    image: teamspeak
+    restart: always
+    ports:
+      - 443:443
+    # environment:
+      # TS3SERVER_DB_PLUGIN: ts3db_mariadb
+    # volumes:
+    #     - /volume1/docker/teamspeak/ts_server:/var/ts3server/
