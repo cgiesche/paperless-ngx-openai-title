@@ -118,8 +118,4 @@ if __name__ == "__main__":
         process_document(DOCUMENT_ID)
     else:
         print("No document ID provided.")
-        
-        
-# https://dokumente.homelink.cloud/api/documents/100/tags/21
 
-# curl -X DELETE -H "Authorization: Bearer 22bbffc98cf322ba60d7a095caecbbb0d7e83fc2" "https://dokumente.homelink.cloud/api/documents/100/tags/21"
