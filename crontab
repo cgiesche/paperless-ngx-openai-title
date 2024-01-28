@@ -1,0 +1,1 @@
+* * * * * /usr/local/bin/python /usr/src/app/find_documents_with_tag_id.py >> /var/log/cron.log 2>&1
