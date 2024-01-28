@@ -20,8 +20,11 @@ COPY find_documents_with_tag_id.py ./
 RUN touch /var/log/cron.log
 RUN crontab /etc/cron.d/crontab
 
+# RUN ln -sf /dev/stdout /var/log/cron.log
+
 # Executing crontab command
 CMD ["cron", "-f"]
 
 
 
+#  tail -f /var/log/cron.log

@@ -75,6 +75,20 @@ def process_document(document_id):
 
     print(f'Updating title and tags of document with ID {document_id}')
 
+    patch_data = {
+        'title': open_ai_response_content  # New title
+    }
+
+    # Performing the PATCH request
+    update_response = requests.patch(document_url, json=patch_data, headers=paperless_auth_header)
+
+    # Checking the result of the request
+    if update_response.status_code == 200:
+        print(f"Document with ID {document_id} successfully updated with titel.")
+    else:
+        print(f"Error updating the document with ID {document_id}: Status code {update_response.status_code}")
+
+
     # Preparing the data for the update
     tag_id_to_remove = config.paperless['generate_titel_tag']
 
@@ -82,13 +96,12 @@ def process_document(document_id):
     updated_tags = [tag for tag in original_document_tags if tag != tag_id_to_remove]
 
     # Merging the update data for title and tags
-    combined_update_data = {
-        'title': open_ai_response_content,  # New title
+    patch_data = {
         'tags': updated_tags  # Updated tag list
     }
 
     # Performing the PATCH request
-    update_response = requests.patch(document_url, json=combined_update_data, headers=paperless_auth_header)
+    update_response = requests.patch(document_url, json=patch_data, headers=paperless_auth_header)
 
     # Checking the result of the request
     if update_response.status_code == 200:
@@ -105,3 +118,8 @@ if __name__ == "__main__":
         process_document(DOCUMENT_ID)
     else:
         print("No document ID provided.")
+        
+        
+# https://dokumente.homelink.cloud/api/documents/100/tags/21
+
+# curl -X DELETE -H "Authorization: Bearer 22bbffc98cf322ba60d7a095caecbbb0d7e83fc2" "https://dokumente.homelink.cloud/api/documents/100/tags/21"
