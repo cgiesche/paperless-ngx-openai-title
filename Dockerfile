@@ -17,11 +17,6 @@ COPY config.py ./
 COPY generate_title.py ./
 COPY find_documents_with_tag_id.py ./
 
-# COPY run.sh ./
-
-
-# RUN chmod +x run.sh
-
 RUN touch /var/log/cron.log
 RUN crontab /etc/cron.d/crontab
 
@@ -30,4 +25,3 @@ CMD ["cron", "-f"]
 
 
 
-# CMD [ "./run.sh" ]
