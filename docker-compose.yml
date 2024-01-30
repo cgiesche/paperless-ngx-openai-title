@@ -3,4 +3,3 @@ services:
   paperless-ngx-openai-title:
     image: paperless-ngx-openai-title
     restart: always
-    # command: /bin/bash -c "/usr/local/bin/python /usr/src/app/find_documents_with_tag_id.py && cron -f"
