@@ -23,7 +23,9 @@ RUN crontab /etc/cron.d/crontab
 # RUN ln -sf /dev/stdout /var/log/cron.log
 
 # Executing crontab command
-CMD ["cron", "-f"]
+# CMD ["cron", "-f"]
+CMD cron && tail -f /var/log/cron.log
+
 
 
 
