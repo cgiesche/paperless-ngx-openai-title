@@ -1,1 +1,2 @@
-* * * * * /usr/local/bin/python /usr/src/app/find_documents_with_tag_id.py >> /var/log/cron.log 2>&1
+# runs every hour at minute 5
+#5 * * * * /usr/local/bin/python /usr/src/app/find_documents_with_tag_id.py >> /var/log/cron.log 2>&1
