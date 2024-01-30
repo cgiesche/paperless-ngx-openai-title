@@ -21,6 +21,11 @@ def process_document(document_id):
         exit(0)
 
     document_json = document_response.json()
+    
+    # print(document_json)
+    # print('##################################################################################')
+    # print(document_json['tags'])
+
 
     original_document_content = document_json['content']
     original_document_title = document_json['title']
@@ -84,16 +89,18 @@ def process_document(document_id):
 
     # Checking the result of the request
     if update_response.status_code == 200:
-        print(f"Document with ID {document_id} successfully updated with titel.")
+        print(f"Updated titel.")
     else:
         print(f"Error updating the document with ID {document_id}: Status code {update_response.status_code}")
 
 
     # Preparing the data for the update
-    tag_id_to_remove = config.paperless['generate_titel_tag']
+    tag_id_to_remove = int(config.paperless['generate_titel_tag'])
 
     # Removing the specific tag from the list
     updated_tags = [tag for tag in original_document_tags if tag != tag_id_to_remove]
+
+    # print(f"original_document_tags: {original_document_tags}    |    updated_tags: {updated_tags}")
 
     # Merging the update data for title and tags
     patch_data = {
@@ -111,6 +118,7 @@ def process_document(document_id):
 
 
     print('Finished document with ID ' + document_id)
+    print('#############################')
 
 if __name__ == "__main__":
     DOCUMENT_ID = os.getenv('DOCUMENT_ID')
