@@ -38,19 +38,29 @@ def find_documents_with_tag_id(tag_id):
     return all_document_ids
 
 
+# Check if the tag to be removed is set in the config
+generate_titel_tag_config = config.paperless.get('generate_titel_tag')
+generate_titel_tag = int(generate_titel_tag_config) if generate_titel_tag_config else None
 
-generate_titel_tag = config.paperless['generate_titel_tag']
-
-# check if tag is given
-if generate_titel_tag:
+# Check if the tag is in the configuration
+if generate_titel_tag is not None:
+    # Find documents with the specified tag
     documents = find_documents_with_tag_id(generate_titel_tag)
     if documents:
+        # Print the number of documents found with the tag
         print(f"Found: {len(documents)} documents with tag: {generate_titel_tag}")
-        for doc_id in documents:
+        # Start editing the documents
+        print('Begin editing the documents.')
+        total_documents = len(documents)
+        # Iterate through the documents
+        for index, doc_id in enumerate(documents, start=1):
+            print('#############################')
+            # Print the current document being processed
+            print(f'Start processing document {index} of {total_documents}.')
             process_document(str(doc_id))
     else:
+        # If no documents are retrieved
         print("No documents retrieved.")
 else:
+    # If generate_titel_tag is not specified in the configuration
     print("No generate_titel_tag specified in the configuration.")
-
-

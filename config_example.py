@@ -11,5 +11,5 @@ paperless = dict(
     title_pattern='',  # Skip update if current title does _not_ match this pattern.
     api_key='',
     base_url='https://your-paperless:1234',
-    generate_titel_tag=''   # If provided, only documents with this tag will be processed and the tag will then be removed.
+    generate_titel_tag=''   # If provided, only documents with this tag id will be processed and the tag will then be removed.
 )
