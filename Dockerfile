@@ -19,5 +19,5 @@ COPY find_documents_with_tag_id.py ./
 RUN touch /var/log/cron.log
 RUN crontab /etc/cron.d/crontab
 
-# Executing crontab command
-CMD cron && tail -f /var/log/cron.log
+# Execute the script and then start cron job
+CMD python find_documents_with_tag_id.py && cron && tail -f /var/log/cron.log
