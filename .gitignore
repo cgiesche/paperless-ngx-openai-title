@@ -161,4 +161,4 @@ cython_debug/
 
 *.code-workspace
 config.py
-notes.txt
+/notes
