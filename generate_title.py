@@ -66,16 +66,27 @@ def process_document(document_id):
     open_ai_response_content = openai_response_json['choices'][0]['message']['content']
     print(f'Document ID {document_id}: OpenAI title suggestion: ' + open_ai_response_content)
 
-    # Update Title and add note
-    print(f'Document ID {document_id}: Saving original title of document as note.')
-    document_original_title_note_request = {
-        'note': f'Original title: {original_document_title}'
-    }
-    result = requests.post(document_url + "notes/", json=document_original_title_note_request, headers=paperless_auth_header)
-    if not result.ok:
-        raise AssertionError("Adding original title as note failed.")
 
-    # print(f'Document ID {document_id}: Updating title and tags of document')
+
+    # Check if custom field is set in the config
+    custom_field_id_config = config.paperless.get('custom_field')
+    custom_field_id = int(custom_field_id_config) if custom_field_id_config else None
+
+    # Only update tags if the tag to be removed is set
+    if custom_field_id is not None:
+
+        # Add ogirinal titel in custom field
+        print(f'Document ID {document_id}: Saving original title of document in custom field ID {custom_field_id}.')
+        custom_field_data = {
+            'custom_fields': [
+                {'field': custom_field_id, 'value': original_document_title}
+            ]
+        }
+
+        custom_field_result = requests.patch(document_url, json=custom_field_data, headers=paperless_auth_header)
+        if not custom_field_result.ok:
+            raise AssertionError(f"Adding original title in custom field failed.")
+
 
     # Check if the tag to be removed is set in the config
     tag_id_to_remove_config = config.paperless.get('generate_titel_tag')
